@@ -25,8 +25,8 @@ print(input("Press enter to close"))
 
 x = []
 
-with open('movielist.csv','r') as listfile:
-    plots = csv.reader(listfile, delimiter=',')
+with open('movielist.csv','r') as df:
+    plots = csv.reader(df, delimiter=',')
     for column in plots:
         x.append(column[2])
 
