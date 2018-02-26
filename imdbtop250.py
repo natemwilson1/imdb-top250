@@ -27,8 +27,8 @@ x = []
 
 with open('movielist.csv','r') as listfile:
     plots = csv.reader(listfile, delimiter=',')
-    for row in plots:
-        x.append(row[2])
+    for column in plots:
+        x.append(column[2])
 
 
 x.remove('year')
