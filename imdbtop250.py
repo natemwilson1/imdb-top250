@@ -3,11 +3,8 @@ import requests
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-import csv
 from collections import Counter
-from datetime import datetime
-from dateutil import parser
-import os
+import csv
 
 source = requests.get('http://www.imdb.com/chart/top').text
 
