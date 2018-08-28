@@ -6,40 +6,35 @@ import matplotlib.pyplot as plt
 from collections import Counter
 import csv
 
+# Scrapes the IMDB's site
 source = requests.get('http://www.imdb.com/chart/top').text
-
 soup = BeautifulSoup(source, 'html.parser')
-results = soup.find_all('td',attrs={'class':'titleColumn'})
+movie_scrap_lines = soup.find_all('td', attrs={'class': 'titleColumn'})
 
-listy = []
-for result in results:
-    number = result.contents[0][7:-8]
-    title = result.contents[1].text
-    year = result.find('span').text[1:-1]
-    listy.append((number, title, year))
+def get_movie_info(movie_info):
+    return (movie_info.contents[0][7:-8],
+            movie_info.contents[1].text,
+            movie_info.find('span').text[1:-1])
 
-df = pd.DataFrame(listy, columns=['number','title','year'])
-df.to_csv('movielist.csv',index=False,encoding='utf-8')
+
+movie_infos = [get_movie_info(movie_scrap_line) for movie_scrap_line in movie_scrap_lines]
+
+# Dump the result into a csv file
+df = pd.DataFrame(movie_infos, columns=['number', 'title', 'year'])
+df.to_csv('movielist.csv', index=False, encoding='utf-8')
 print(df)
 print(input("Press enter to close"))
 
-x = []
-
 with open('movielist.csv','r') as df:
     plots = csv.reader(df, delimiter=',')
-    for column in plots:
-        x.append(column[2])
+    x = [column[2] for column in plots if column[2] != 'year']
 
-
-x.remove('year')
+# Plot a graph top movies per year
 x2 = Counter(x)
 counted = sorted(x2.items())
+x, y = zip(*counted)
 
-x,y = zip(*counted)
-
-x = list(map(int,x))
-
-sns.barplot(x,y)
+sns.barplot(list(map(int, x)), y)
 plt.xticks(rotation=70)
 plt.title('IMDB Top 250 by Year')
 plt.xlabel('year')
@@ -49,7 +44,3 @@ plt.tight_layout()
 mng = plt.get_current_fig_manager()
 mng.resize(*mng.window.maxsize())
 plt.show()
-
-
-
-
