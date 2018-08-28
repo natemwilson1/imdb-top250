@@ -21,7 +21,6 @@ for result in results:
 df = pd.DataFrame(listy, columns=['number','title','year'])
 df.to_csv('movielist.csv',index=False,encoding='utf-8')
 print(df)
-print(input("Press enter to close"))
 
 x = []
 
@@ -46,10 +45,8 @@ plt.xlabel('year')
 plt.ylabel('number of movies in the top 250')
 plt.tick_params(axis='x', which='major', labelsize=6)
 plt.tight_layout()
-mng = plt.get_current_fig_manager()
-mng.resize(*mng.window.maxsize())
-plt.show()
+plt.show(block=False)
 
+print(raw_input("Press enter to close"))
 
-
-
+plt.close('all')
