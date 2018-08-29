@@ -45,6 +45,9 @@ plt.xlabel('year')
 plt.ylabel('number of movies in the top 250')
 plt.tick_params(axis='x', which='major', labelsize=6)
 plt.tight_layout()
+fig_manager = plt.get_current_fig_manager()
+if hasattr(fig_manager, 'window'):  # on mac osx window property does not exist
+    fig_manager.window.showMaximized()
 plt.show(block=False)
 
 print(raw_input("Press enter to close"))
