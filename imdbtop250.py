@@ -23,7 +23,6 @@ movie_infos = [get_movie_info(movie_scrap_line) for movie_scrap_line in movie_sc
 df = pd.DataFrame(movie_infos, columns=['number', 'title', 'year'])
 df.to_csv('movielist.csv', index=False, encoding='utf-8')
 print(df)
-print(input("Press enter to close"))
 
 with open('movielist.csv','r') as df:
     plots = csv.reader(df, delimiter=',')
@@ -41,6 +40,13 @@ plt.xlabel('year')
 plt.ylabel('number of movies in the top 250')
 plt.tick_params(axis='x', which='major', labelsize=6)
 plt.tight_layout()
-mng = plt.get_current_fig_manager()
-mng.resize(*mng.window.maxsize())
-plt.show()
+
+fig_manager = plt.get_current_fig_manager()
+if hasattr(fig_manager, 'window'):  # on mac osx window property does not exist
+    fig_manager.window.showMaximized()
+plt.show(block=False)
+
+print(raw_input("Press enter to close"))
+
+plt.close('all')
+
